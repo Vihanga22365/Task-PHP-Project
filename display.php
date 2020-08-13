@@ -13,7 +13,7 @@
 <nav class="navbar navbar-light bg-light justify-content-between">
   <a class="navbar-brand">Interview Project</a>
   <form class="form-inline" action="display.php" method="post">
-    <input class="form-control mr-sm-2" type="text" name="valueTosearch" placeholder="Search" aria-label="Search">
+    <input class="form-control mr-sm-2" type="text" name="valueTosearch" placeholder="Search Name" aria-label="Search">
     <button class="btn btn-outline-primary my-2 my-sm-0" type="submit" name="search" value="filter">Search</button>
   </form>
 </nav>
@@ -88,14 +88,23 @@
     }
 ?>
 
+
+
 <?php
 
 //Search Name
-
 if(isset($_POST['search']))
 {
     $valueTosearch = $_POST['valueTosearch'];
     $sql = "SELECT * FROM `register` WHERE CONCAT (`name`) LIKE '%".$valueTosearch. "%';";
+    $result = filterTable($sql);
+}
+//Search Age Between
+elseif (isset($_POST['searchAge']))
+{
+    $age1 = $_POST['age1'];
+    $age2 = $_POST['age2'];
+    $sql = "SELECT * FROM `register` WHERE CONCAT (`age`) BETWEEN $age1 AND $age2 ;";
     $result = filterTable($sql);
 }
 
@@ -115,38 +124,6 @@ function filterTable($sql)
     $conn = mysqli_connect($host,$dbUsername,$dbPassword,$dbname);
     $filter_Result = mysqli_query($conn,$sql);
     return $filter_Result;
-}
-
-
-?>
-
-<?php
-//Search Age Between
-
-if(isset($_POST['searchAge']))
-{
-$age1 = $_POST['age1'];
-$age2 = $_POST['age2'];
-$sql = "SELECT * FROM `register` WHERE CONCAT (`age`) BETWEEN $age1 AND $age2 ;";
-$result = filterTable($sql);
-}
-
-else
-{
-$sql = "SELECT * FROM register";
-$result = filterTable1($sql);
-}
-
-function filterTable1($sql)
-{
-$host = "localhost";
-$dbUsername = "root";
-$dbPassword = "";
-$dbname = "user";
-
-$conn = mysqli_connect($host,$dbUsername,$dbPassword,$dbname);
-$filter_Result = mysqli_query($conn,$sql);
-return $filter_Result;
 }
 
 
